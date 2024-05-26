@@ -25,7 +25,7 @@ const writeData = (data) => {
 };
 
 app.get("/", (req, res) => {
-  res.send("Welcome to my first API with Node js!");
+  res.send("Bienvenido a las pruebas de Rest-API");
 });
 
 //Creamos una ruta empoints
