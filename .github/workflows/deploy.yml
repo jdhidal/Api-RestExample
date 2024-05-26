@@ -1,0 +1,16 @@
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Deploy to Heroku
+        if: github.event_name == 'push'
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}  # Variable de entorno secreta con la API key de Heroku
+          heroku_app_name: app-lognode  # Nombre de tu aplicación en Heroku
+          heroku_email: diegohidalgo673@gmail.com  # Correo electrónico asociado con tu cuenta de Heroku
