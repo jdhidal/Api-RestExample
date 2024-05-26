@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 const app = express();
 app.use(bodyParser.json());
 
+//Lectura de Datos
 const readData = () => {
   try {
     const data = fs.readFileSync("./db.json");
@@ -14,6 +15,7 @@ const readData = () => {
   }
 };
 
+//Tomamos el error
 const writeData = (data) => {
   try {
     fs.writeFileSync("./db.json", JSON.stringify(data));
@@ -26,11 +28,13 @@ app.get("/", (req, res) => {
   res.send("Welcome to my first API with Node js!");
 });
 
+//Creamos una ruta empoints
 app.get("/books", (req, res) => {
   const data = readData();
   res.json(data.books);
 });
 
+//Creamos empoints para buscar por id
 app.get("/books/:id", (req, res) => {
   const data = readData();
   const id = parseInt(req.params.id);
@@ -38,6 +42,7 @@ app.get("/books/:id", (req, res) => {
   res.json(book);
 });
 
+//Creamos empoints tipo post para crear 
 app.post("/books", (req, res) => {
   const data = readData();
   const body = req.body;
@@ -50,6 +55,7 @@ app.post("/books", (req, res) => {
   res.json(newBook);
 });
 
+//Creamos empoints tipo put para actualizar
 app.put("/books/:id", (req, res) => {
   const data = readData();
   const body = req.body;
@@ -63,6 +69,7 @@ app.put("/books/:id", (req, res) => {
   res.json({ message: "Book updated successfully" });
 });
 
+//Creamos empoints tipo delete para eliminar
 app.delete("/books/:id", (req, res) => {
   const data = readData();
   const id = parseInt(req.params.id);
@@ -72,6 +79,8 @@ app.delete("/books/:id", (req, res) => {
   res.json({ message: "Book deleted successfully" });
 });
 
-app.listen(3000, () => {
-  console.log("Server listening on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`SERVER UP running on port ${PORT}`);
 });
