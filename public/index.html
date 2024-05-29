@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Library</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #booksList { margin-top: 20px; }
+        .book { margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; }
+        form { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Books Library</h1>
+    <button id="loadBooks">Load Books</button>
+    <div id="booksList"></div>
+
+    <h2>Add a New Book</h2>
+    <form id="addBookForm">
+        <label for="addName">Name:</label>
+        <input type="text" id="addName" name="name" required>
+        <label for="addAuthor">Author:</label>
+        <input type="text" id="addAuthor" name="author" required>
+        <label for="addYear">Year:</label>
+        <input type="number" id="addYear" name="year" required>
+        <button type="submit">Add Book</button>
+    </form>
+
+    <h2>Update a Book</h2>
+    <form id="updateBookForm">
+        <label for="updateId">Book ID:</label>
+        <input type="number" id="updateId" name="id" required>
+        <label for="updateName">Name:</label>
+        <input type="text" id="updateName" name="name">
+        <label for="updateAuthor">Author:</label>
+        <input type="text" id="updateAuthor" name="author">
+        <label for="updateYear">Year:</label>
+        <input type="number" id="updateYear" name="year">
+        <button type="submit">Update Book</button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
+

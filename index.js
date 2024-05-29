@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static('public'));
 
 //Lectura de Datos
 const readData = () => {
@@ -24,9 +25,6 @@ const writeData = (data) => {
   }
 };
 
-app.get("/", (req, res) => {
-  res.send("Bienvenido a las pruebas de Rest-API");
-});
 
 //Creamos una ruta empoints
 app.get("/books", (req, res) => {
