@@ -1,47 +1,56 @@
-import express from "express";
-import fs from "fs";
-import bodyParser from "body-parser";
+import express from 'express';
+import bodyParser from 'body-parser';
+import fs from 'fs';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpecs from '/swagger'; // Importa las especificaciones de Swagger
 
 const app = express();
+
+// Middleware
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-//Read dates
+// Funciones de lectura y escritura de datos
 const readData = () => {
   try {
-    const data = fs.readFileSync("./db.json");
+    const data = fs.readFileSync('./db.json');
     return JSON.parse(data);
   } catch (error) {
     console.log(error);
+    return { books: [] }; // Manejo básico de errores, retornando un objeto vacío
   }
 };
 
-//catch error
 const writeData = (data) => {
   try {
-    fs.writeFileSync("./db.json", JSON.stringify(data));
+    fs.writeFileSync('./db.json', JSON.stringify(data));
   } catch (error) {
     console.log(error);
   }
 };
 
+// Rutas de la API
 
-//Create Books
-app.get("/books", (req, res) => {
+// Endpoint para obtener todos los libros
+app.get('/books', (req, res) => {
   const data = readData();
   res.json(data.books);
 });
 
-//Search for ID-Books
-app.get("/books/:id", (req, res) => {
+// Endpoint para obtener un libro por su ID
+app.get('/books/:id', (req, res) => {
   const data = readData();
   const id = parseInt(req.params.id);
   const book = data.books.find((book) => book.id === id);
-  res.json(book);
+  if (book) {
+    res.json(book);
+  } else {
+    res.status(404).json({ message: 'Book not found' });
+  }
 });
 
-//Create new Books
-app.post("/books", (req, res) => {
+// Endpoint para crear un nuevo libro
+app.post('/books', (req, res) => {
   const data = readData();
   const body = req.body;
   const newBook = {
@@ -50,35 +59,45 @@ app.post("/books", (req, res) => {
   };
   data.books.push(newBook);
   writeData(data);
-  res.json(newBook);
+  res.status(201).json(newBook);
 });
 
-//Put update Books for ID
-app.put("/books/:id", (req, res) => {
+// Endpoint para actualizar un libro por su ID
+app.put('/books/:id', (req, res) => {
   const data = readData();
   const body = req.body;
   const id = parseInt(req.params.id);
   const bookIndex = data.books.findIndex((book) => book.id === id);
-  data.books[bookIndex] = {
-    ...data.books[bookIndex],
-    ...body,
-  };
-  writeData(data);
-  res.json({ message: "Book updated successfully" });
+  if (bookIndex !== -1) {
+    data.books[bookIndex] = {
+      ...data.books[bookIndex],
+      ...body,
+    };
+    writeData(data);
+    res.json({ message: 'Book updated successfully' });
+  } else {
+    res.status(404).json({ message: 'Book not found' });
+  }
 });
 
-//Delete Books for ID
-app.delete("/books/:id", (req, res) => {
+// Endpoint para eliminar un libro por su ID
+app.delete('/books/:id', (req, res) => {
   const data = readData();
   const id = parseInt(req.params.id);
   const bookIndex = data.books.findIndex((book) => book.id === id);
-  data.books.splice(bookIndex, 1);
-  writeData(data);
-  res.json({ message: "Book deleted successfully" });
+  if (bookIndex !== -1) {
+    data.books.splice(bookIndex, 1);
+    writeData(data);
+    res.json({ message: 'Book deleted successfully' });
+  } else {
+    res.status(404).json({ message: 'Book not found' });
+  }
 });
 
-const PORT = process.env.PORT || 3000;
+// Middleware para servir la documentación de Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`SERVER UP running on port ${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
