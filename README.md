@@ -1,7 +1,12 @@
-This example Rest API
+This example Rest API - Server Express
 
-A Colaborator is Kevin Guaña
+Colaborators are Kevin Guaña and Diego Hidalgo 
 
 
-You need install npm install
-The run proyect localhost : npm start 
+You need install: npm install express
+
+The run proyect localhost : npm start
+
+For the use API. Use the interface or in this proyect use file requests.http for URL examples
+
+As a workshop in class the file is modified index.js

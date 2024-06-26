@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-//Lectura de Datos
+//Read dates
 const readData = () => {
   try {
     const data = fs.readFileSync("./db.json");
@@ -16,7 +16,7 @@ const readData = () => {
   }
 };
 
-//Tomamos el error
+//catch error
 const writeData = (data) => {
   try {
     fs.writeFileSync("./db.json", JSON.stringify(data));
@@ -26,13 +26,13 @@ const writeData = (data) => {
 };
 
 
-//Creamos una ruta empoints
+//Create Books
 app.get("/books", (req, res) => {
   const data = readData();
   res.json(data.books);
 });
 
-//Creamos empoints para buscar por id
+//Search for ID-Books
 app.get("/books/:id", (req, res) => {
   const data = readData();
   const id = parseInt(req.params.id);
@@ -40,7 +40,7 @@ app.get("/books/:id", (req, res) => {
   res.json(book);
 });
 
-//Creamos empoints tipo post para crear 
+//Create new Books
 app.post("/books", (req, res) => {
   const data = readData();
   const body = req.body;
@@ -53,7 +53,7 @@ app.post("/books", (req, res) => {
   res.json(newBook);
 });
 
-//Creamos empoints tipo put para actualizar
+//Put update Books for ID
 app.put("/books/:id", (req, res) => {
   const data = readData();
   const body = req.body;
@@ -67,7 +67,7 @@ app.put("/books/:id", (req, res) => {
   res.json({ message: "Book updated successfully" });
 });
 
-//Creamos empoints tipo delete para eliminar
+//Delete Books for ID
 app.delete("/books/:id", (req, res) => {
   const data = readData();
   const id = parseInt(req.params.id);
