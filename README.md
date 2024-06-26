@@ -4,4 +4,4 @@ A Colaborator is Kevin Guaña
 
 
 You need install npm install
-The run proyect : npm start 
+The run proyect localhost : npm start 
